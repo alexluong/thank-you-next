@@ -6,19 +6,25 @@
   "scripts": {
     "build": "run-p build:**",
     "build:app": "gatsby build",
-    "build:lambda": "netlify-lambda build src/lambda",
+    "build:lambda": "netlify-lambda build netlify/functions",
     "develop": "gatsby develop",
     "format": "prettier --write src/**/*.{js,jsx}",
-    "start": "npm run develop",
+    "start": "yarn develop",
+    "start:lambda": "dotenv -e netlify/.env netlify-lambda serve netlify/functions",
     "serve": "gatsby serve",
     "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
   },
   "dependencies": {
+    "badwords": "^1.0.0",
     "gatsby": "^2.10.4",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6"
+    "react-dom": "^16.8.6",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
   },
   "devDependencies": {
+    "dotenv-cli": "^2.0.0",
+    "http-proxy-middleware": "^0.19.1",
     "netlify-lambda": "^1.4.13",
     "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2"
