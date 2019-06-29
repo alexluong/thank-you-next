@@ -29,7 +29,7 @@ export async function handler(event, context, callback) {
   try {
     const body = await deleteWebhook()
 
-    console.log(body)
+    console.log(typeof body)
 
     if (body.statusCode === 204) {
       callback(null, {
