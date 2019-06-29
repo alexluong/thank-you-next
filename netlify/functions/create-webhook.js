@@ -18,8 +18,7 @@ function createWebhook(siteUrl) {
 }
 
 export async function handler(event, context, callback) {
-  const siteUrl = isDev ? DEV_SERVER_URL : event.queryStringParameters.siteUrl
-  console.log(process.env.NODE_ENV)
+  const siteUrl = process.env.URL
   console.log(siteUrl)
 
   try {

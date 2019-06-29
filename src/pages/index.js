@@ -4,7 +4,7 @@ function IndexPage(props) {
   const siteUrl = props.location.origin
 
   function handleCreateWebhook() {
-    fetch(`/.netlify/functions/create-webhook?siteUrl=${siteUrl}`)
+    fetch(`/.netlify/functions/create-webhook`)
       .then(response => response.json())
       .then(console.log)
   }

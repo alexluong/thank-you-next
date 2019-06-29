@@ -3,10 +3,14 @@ import { DEV_SERVER_URL, TWITTER_WEBHOOK_ENV, twitterOauth, isDev } from "../con
 
 async function deleteWebhook() {
   // GET request to retreive webhook config
+  console.log("Deleting webhook")
+
   const webhooks = await request.get({
     url: `https://api.twitter.com/1.1/account_activity/all/${TWITTER_WEBHOOK_ENV}/webhooks.json`,
     oauth: twitterOauth,
   })
+
+  console.log(webhooks)
 
   // parse webhook ID
   const webhookId = JSON.parse(webhooks)[0].id
