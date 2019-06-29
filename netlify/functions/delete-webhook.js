@@ -29,12 +29,18 @@ export async function handler(event, context, callback) {
   try {
     const body = await deleteWebhook()
 
-    console.log(typeof body)
+    console.log(body.statusCode)
+    console.log(Object.keys(body))
 
     if (body.statusCode === 204) {
       callback(null, {
         statusCode: 200,
         body: "Successfully delete webhook",
+      })
+    } else {
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify(body),
       })
     }
   } catch (e) {

@@ -5,8 +5,14 @@ function IndexPage(props) {
 
   function handleCreateWebhook() {
     fetch(`/.netlify/functions/create-webhook`)
-      .then(response => response.json())
-      .then(console.log)
+      .then(response => {
+        console.log(response)
+        return response.json()
+      })
+      .then(response => {
+        console.log(response)
+        console.log(typeof response)
+      })
   }
 
   function handleDeleteWebhook() {
