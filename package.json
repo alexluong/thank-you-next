@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "build": "run-p build:**",
+    "build": "build:lambda && build:app",
     "build:app": "gatsby build",
     "build:lambda": "netlify-lambda build netlify/functions",
     "develop": "gatsby develop",
@@ -26,7 +26,6 @@
     "dotenv-cli": "^2.0.0",
     "http-proxy-middleware": "^0.19.1",
     "netlify-lambda": "^1.4.13",
-    "npm-run-all": "^4.1.5",
     "prettier": "^1.18.2"
   }
 }
