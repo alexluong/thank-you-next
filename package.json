@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "build": "build:lambda && build:app",
+    "build": "yarn build:lambda && yarn build:app",
     "build:app": "gatsby build",
     "build:lambda": "netlify-lambda build netlify/functions",
     "develop": "gatsby develop",
