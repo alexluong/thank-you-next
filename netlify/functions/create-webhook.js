@@ -19,13 +19,13 @@ function createWebhook(siteUrl) {
 
 export async function handler(event, context, callback) {
   const siteUrl = process.env.URL
-  console.log(siteUrl)
 
   try {
     const body = await createWebhook(siteUrl)
+
     callback(null, {
       statusCode: 200,
-      body: JSON.stringify(body),
+      body: JSON.stringify(JSON.parse(body)),
     })
   } catch (e) {
     console.log(e.message)

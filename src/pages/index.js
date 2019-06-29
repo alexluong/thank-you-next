@@ -1,8 +1,6 @@
 import React from "react"
 
 function IndexPage(props) {
-  const siteUrl = props.location.origin
-
   function handleCreateWebhook() {
     fetch(`/.netlify/functions/create-webhook`)
       .then(response => {
