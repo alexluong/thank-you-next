@@ -1,6 +1,13 @@
 import React from "react"
+import firebase from "firebase/app"
 
 function IndexPage(props) {
+  firebase
+    .database()
+    .ref("whitelist/123")
+    .once("value")
+    .then(a => console.log(a.val()))
+
   function handleCreateWebhook() {
     fetch(`/.netlify/functions/create-webhook`)
       .then(response => {

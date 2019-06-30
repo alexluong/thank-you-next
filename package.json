@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "badwords": "^1.0.0",
+    "firebase": "^6.2.4",
     "gatsby": "^2.10.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
