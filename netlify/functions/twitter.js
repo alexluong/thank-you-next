@@ -21,7 +21,7 @@ function getHandler(event, context, callback) {
   }
 }
 
-function postHandler(event, context, callback) {
+async function postHandler(event, context, callback) {
   const body = JSON.parse(event.body)
 
   if (!body.direct_message_events) {
@@ -32,7 +32,13 @@ function postHandler(event, context, callback) {
   const message = dmEvent.message_create
   console.log(message.message_data)
   console.log(message.sender_id)
-  console.log(message.source_app_id)
+
+  let data = await request.get({
+    url: `${process.env.GATSBY_FIREBASE_DATABASE_URL}/whitelist/123.json`,
+  })
+  data = JSON.parse(data)
+
+  console.log(data)
 
   if (isNoGood(message.message_data.text)) {
     request.delete({
