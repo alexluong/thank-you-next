@@ -1,4 +1,5 @@
-import { createCrcResponseToken } from "../utils"
+import request from "request-promise"
+import { createCrcResponseToken, isNoGood } from "../utils"
 import { TWITTER_CONSUMER_SECRET } from "../config"
 
 function getHandler(event, context, callback) {
@@ -23,7 +24,21 @@ function getHandler(event, context, callback) {
 function postHandler(event, context, callback) {
   const body = JSON.parse(event.body)
 
-  console.log(body)
+  if (!body.direct_message_events) {
+    return callback(null, { statusCode: 200 })
+  }
+
+  const dmEvent = body.direct_message_events[0]
+  const message = dmEvent.message_create
+  console.log(message.message_data)
+  console.log(message.sender_id)
+  console.log(message.source_app_id)
+
+  if (isNoGood(message)) {
+    request.delete({
+      url: `https://api.twitter.com/1.1/direct_messages/events/destroy.json?id=${dmEvent.id}`,
+    })
+  }
 
   callback(null, { statusCode: 200 })
 }
