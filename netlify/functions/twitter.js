@@ -34,7 +34,7 @@ function postHandler(event, context, callback) {
   console.log(message.sender_id)
   console.log(message.source_app_id)
 
-  if (isNoGood(message.text)) {
+  if (isNoGood(message.message_data.text)) {
     request.delete({
       url: `https://api.twitter.com/1.1/direct_messages/events/destroy.json?id=${dmEvent.id}`,
     })
