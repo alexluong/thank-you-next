@@ -1,6 +1,6 @@
 import request from "request-promise"
 import { createCrcResponseToken, isNoGood } from "../utils"
-import { TWITTER_CONSUMER_SECRET } from "../config"
+import { TWITTER_CONSUMER_SECRET, twitterOauth } from "../config"
 
 function getHandler(event, context, callback) {
   const crcToken = event.queryStringParameters.crc_token
@@ -37,6 +37,7 @@ function postHandler(event, context, callback) {
   if (isNoGood(message.message_data.text)) {
     request.delete({
       url: `https://api.twitter.com/1.1/direct_messages/events/destroy.json?id=${dmEvent.id}`,
+      oauth: twitterOauth,
     })
   }
 
