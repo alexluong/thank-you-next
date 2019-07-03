@@ -1,13 +1,9 @@
 import request from "request-promise"
-import { createCrcResponseToken, isNoGood } from "../utils"
-import { URL, EASYCRON_API_TOKEN, TWITTER_CONSUMER_SECRET, twitterOauth } from "../config"
-
-const EASYCRON_URL = "https://www.easycron.com/rest"
+import { addCron, getCron } from "../utils"
+import { URL, TWITTER_CONSUMER_SECRET, twitterOauth, cronExpression15 } from "../config"
 
 async function getHandler(event, context) {
-  const uri = `${EASYCRON_URL}/list?token=${EASYCRON_API_TOKEN}`
-  const response = await request.get({ uri })
-  const body = JSON.parse(response)
+  const body = await getCron()
 
   return {
     statusCode: 200,
@@ -17,11 +13,7 @@ async function getHandler(event, context) {
 
 async function postHandler(event, context) {
   const analyzeDmUrl = `${URL}/.netlify/functions/analyze-dm`
-  const url = `${EASYCRON_URL}/add?token=${EASYCRON_API_TOKEN}&cron_expression=*/15 * * * *&url=${analyzeDmUrl}`
-  const encodedUrl = encodeURI(url)
-
-  const response = await request.get({ uri: encodedUrl })
-  const body = JSON.parse(response)
+  const body = await addCron(analyzeDmUrl, cronExpression15)
 
   return {
     statusCode: 200,
