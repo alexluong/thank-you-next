@@ -27,7 +27,7 @@ export function isNoGood(message) {
   const numTrue = tokens.reduce((num, isTrue) => (isTrue ? num + 1 : num))
   const percent = (numTrue * 100) / tokens.length
 
-  return percent > 50
+  return percent >= 50
 }
 
 export function getCron() {
