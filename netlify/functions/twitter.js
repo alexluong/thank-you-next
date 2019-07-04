@@ -33,14 +33,8 @@ async function postHandler(event, context, callback) {
   console.log(message.message_data)
   console.log(message.sender_id)
 
-  let data = await request.get({
-    url: `${process.env.GATSBY_FIREBASE_DATABASE_URL}/whitelist/123.json`,
-  })
-  data = JSON.parse(data)
-
-  console.log(data)
-
   if (isNoGood(message.message_data.text)) {
+    console.log("Deleting message: " + message.message_data.text)
     request.delete({
       url: `https://api.twitter.com/1.1/direct_messages/events/destroy.json?id=${dmEvent.id}`,
       oauth: twitterOauth,
