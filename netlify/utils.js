@@ -1,7 +1,6 @@
 import crypto from "crypto"
 import request from "request-promise"
 import noGood from "./no-good"
-import { EASYCRON_URL, EASYCRON_API_TOKEN } from "./config"
 
 export function createCrcResponseToken(crcToken, consumerSecret) {
   const hmac = crypto
@@ -28,31 +27,4 @@ export function isNoGood(message) {
   const percent = (numTrue * 100) / tokens.length
 
   return percent >= 50
-}
-
-export function getCron() {
-  const uri = `${EASYCRON_URL}/list?token=${EASYCRON_API_TOKEN}`
-  return request.get({ uri, json: true })
-}
-
-export function addCron(url, expression) {
-  const uri = `${EASYCRON_URL}/add?token=${EASYCRON_API_TOKEN}&cron_expression=${expression}&url=${url}`
-  return request.get({ uri, json: true })
-}
-
-export function enableCron() {
-  const uri = `${EASYCRON_URL}/enable?token=${EASYCRON_API_TOKEN}&id=${cronId}`
-  return request.get({ uri, json: true })
-}
-
-export function disableCron(cronId) {
-  const uri = `${EASYCRON_URL}/disable?token=${EASYCRON_API_TOKEN}&id=${cronId}`
-  return request.get({ uri, json: true })
-}
-
-export function editCursor(cursor) {
-  return request.put({
-    uri: `${FIREBASE_DATABASE_URL}/public/cursor.json`,
-    body: JSON.stringify(cursor),
-  })
 }

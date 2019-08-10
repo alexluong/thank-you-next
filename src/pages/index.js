@@ -22,14 +22,6 @@ function IndexPage(props) {
     })
   }
 
-  function handleCronAdd() {
-    axios.post("/.netlify/functions/cron").then(console.log)
-  }
-
-  function handleCronList() {
-    axios.get("/.netlify/functions/cron").then(console.log)
-  }
-
   return (
     <div>
       <p>Hello world!</p>
@@ -41,12 +33,6 @@ function IndexPage(props) {
       </button>
       <button type="button" onClick={handleGenerateWhitelist}>
         Generate Whitelist
-      </button>
-      <button type="button" onClick={handleCronAdd}>
-        Add Cron Job
-      </button>
-      <button type="button" onClick={handleCronList}>
-        List Cron Jobs
       </button>
 
       <TwitterSignIn />

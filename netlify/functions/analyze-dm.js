@@ -1,7 +1,6 @@
 import request from "request-promise"
 import merge from "lodash.merge"
-import { disableCron, getCron } from "../utils"
-import { FIREBASE_DATABASE_URL, twitterOauth, cronExpression15 } from "../config"
+import { FIREBASE_DATABASE_URL, twitterOauth } from "../config"
 
 export async function handler(event, context, callback) {
   try {
@@ -53,22 +52,10 @@ async function analyze() {
   const { cursor, twitterId, whitelist } = data
 
   const dms = await getAllDm(cursor === "noop" ? null : cursor)
-  console.log(dms.messages.length)
 
   const sentMessages = getSentMessages(dms.messages, twitterId)
   const newWhitelist = createWhitelist(sentMessages)
   const mergedWhitelist = merge(whitelist, newWhitelist)
-
-  let doMoreAnalysis = true
-
-  if (!dms.cursor) {
-    doMoreAnalysis = false
-  }
-
-  // Stop if after analysis, no more whitelist account is added ??
-  // if (Object.keys(whitelist).length === Object.keys(mergedWhitelist)) {
-  //   doMoreAnalysis = false
-  // }
 
   await request.put({
     uri: `${FIREBASE_DATABASE_URL}/public.json`,
@@ -78,11 +65,6 @@ async function analyze() {
       whitelist: mergedWhitelist,
     }),
   })
-
-  if (!doMoreAnalysis) {
-    console.log("Disabling Cron")
-    performDisablingCron()
-  }
 }
 
 async function getAllDm(currentCursor) {
@@ -99,12 +81,6 @@ async function getAllDm(currentCursor) {
     }
 
     messages = [...messages, ...newMessages.events]
-    cursor = newMessages.next_cursor
-
-    if (!cursor) {
-      console.log("No more cursor")
-      break
-    }
   }
   return { messages, cursor }
 }
