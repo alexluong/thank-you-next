@@ -1,12 +1,13 @@
 import request from "request-promise"
 import { URL, TWITTER_WEBHOOK_ENV, twitterOauth } from "../config"
+import { getWebhook } from "../actions/twitter"
 
 async function getHandler(event, context) {
-  console.log("GET webhook")
+  const response = await getWebhook()
 
   return {
     statusCode: 200,
-    body: JSON.stringify("GET"),
+    body: response,
   }
 }
 

@@ -1,6 +1,8 @@
 import request from "request-promise"
 import { createCrcResponseToken, isNoGood } from "../utils"
 import { TWITTER_CONSUMER_SECRET, twitterOauth } from "../config"
+import { deleteMessage } from "../actions/twitter"
+import { addDeletedMessage } from "../actions/firebase"
 
 function getHandler(event, context, callback) {
   const crcToken = event.queryStringParameters.crc_token
@@ -29,15 +31,17 @@ async function postHandler(event, context, callback) {
   }
 
   const dmEvent = body.direct_message_events[0]
-  const message = dmEvent.message_create
-  console.log(message.message_data)
-  console.log(message.sender_id)
 
-  if (isNoGood(message.message_data.text)) {
-    console.log("Deleting message: " + message.message_data.text)
-    request.delete({
-      url: `https://api.twitter.com/1.1/direct_messages/events/destroy.json?id=${dmEvent.id}`,
-      oauth: twitterOauth,
+  // if (dmEvent.for_user_id === "")
+
+  const message = dmEvent.message_create
+  const text = message.message_data.text
+
+  if (isNoGood(text)) {
+    console.log("Deleting message: " + text)
+    deleteMessage(dmEvent.id)
+    addDeletedMessage(message.target.recipient_id, message.sender_id, {
+      message: text,
     })
   }
 

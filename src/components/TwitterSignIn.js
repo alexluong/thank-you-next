@@ -1,13 +1,12 @@
 import React from "react"
-import firebase from "firebase/app"
-
-const provider = new firebase.auth.TwitterAuthProvider()
-const database = firebase.database()
+import { FirebaseContext } from "gatsby-plugin-firebase"
 
 function TwitterSignIn() {
+  const firebase = React.useContext(FirebaseContext)
+
   async function handleSignIn() {
     try {
-      const result = await firebase.auth().signInWithPopup(provider)
+      const result = await firebase.auth().signInWithPopup(new firebase.auth.TwitterAuthProvider())
 
       const token = result.credential.accessToken
       const secret = result.credential.secret
@@ -20,7 +19,10 @@ function TwitterSignIn() {
         imageUrl: profile.profile_image_url_https,
       }
 
-      database.ref(`users/${user.id}/profile`).set(user)
+      firebase
+        .database()
+        .ref(`users/${user.id}/profile`)
+        .set(user)
 
       console.log({ token, secret, user })
     } catch (error) {

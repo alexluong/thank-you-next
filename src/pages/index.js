@@ -1,43 +1,26 @@
 import React from "react"
-import axios from "axios"
-import TwitterSignIn from "../components/TwitterSignIn"
+import { useMachine } from "@xstate/react"
+
+import machine from "../components/machine"
+import Init from "../components/Init"
+import Ready from "../components/Ready"
+import Deployed from "../components/Deployed"
 
 function IndexPage(props) {
-  function handleCreateWebhook() {
-    axios.get("/.netlify/functions/create-webhook").then(response => {
-      console.log(response)
-      console.log(typeof response)
-    })
+  const [current, send] = useMachine(machine)
+
+  if (current.matches("init")) {
+    return <Init init={() => send("INIT")} />
+  } else if (current.matches("ready")) {
+    return <Ready deploy={() => send("DEPLOY")} />
+  } else if (current.matches("deployed")) {
+    return (
+      <Deployed
+        removeWebhook={() => send("REMOVE_WEBHOOK")}
+        removeData={() => send("REMOVE_DATA")}
+      />
+    )
   }
-
-  function handleDeleteWebhook() {
-    axios.get("/.netlify/functions/delete-webhook").then(console.log)
-  }
-
-  function handleGenerateWhitelist() {
-    axios.get("/.netlify/functions/generate-whitelist").then(response => {
-      console.log(response)
-
-      localStorage.setItem("messages", response)
-    })
-  }
-
-  return (
-    <div>
-      <p>Hello world!</p>
-      <button type="button" onClick={handleCreateWebhook}>
-        Create Webhook
-      </button>
-      <button type="button" onClick={handleDeleteWebhook}>
-        Delete Webhook
-      </button>
-      <button type="button" onClick={handleGenerateWhitelist}>
-        Generate Whitelist
-      </button>
-
-      <TwitterSignIn />
-    </div>
-  )
 }
 
 export default IndexPage
