@@ -25,6 +25,7 @@ function getHandler(event, context, callback) {
 
 async function postHandler(event, context, callback) {
   const body = JSON.parse(event.body)
+  console.log(body)
 
   if (!body.direct_message_events) {
     return callback(null, { statusCode: 200 })

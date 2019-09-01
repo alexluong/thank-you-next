@@ -7,7 +7,7 @@ async function getHandler(event, context) {
 
   return {
     statusCode: 200,
-    body: response,
+    body: JSON.stringify(response),
   }
 }
 
@@ -31,6 +31,7 @@ async function postHandler(event, context) {
 async function deleteHandler(event, context) {
   const body = JSON.parse(event.body)
   const { webhookId } = body
+  console.log(webhookId)
 
   const response = await request.delete({
     url: `https://api.twitter.com/1.1/account_activity/all/${TWITTER_WEBHOOK_ENV}/webhooks/${webhookId}.json`,
